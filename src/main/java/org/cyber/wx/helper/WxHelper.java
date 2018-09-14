@@ -2,6 +2,7 @@ package org.cyber.wx.helper;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.cyber.wx.common.HelperCode;
 import org.cyber.wx.constant.WxConstant;
 import org.cyber.wx.properties.WxProperties;
 import org.springframework.util.ObjectUtils;
@@ -41,13 +42,9 @@ public class WxHelper {
 
             userData = ObjectUtils.isEmpty(userData) ? new JSONObject() : userData;
             userData.clear();
-            userData.put("helper_code", "400");
-            userData.put("helper_msg", "获取用户信息失败");
+            userData.fluentPutAll(HelperCode.error());
         } else {
-
-            userData.put("helper_code", "200");
-            userData.put("helper_msg", "获取用户信息成功");
-
+            userData.fluentPutAll(HelperCode.ok());
         }
         return userData;
     }
@@ -59,6 +56,7 @@ public class WxHelper {
      * @return
      */
     private JSONObject accessData(String code) {
+
         String acessUrl = getWpaAccessUrl(code);
         String res = restTemplate.getForObject(acessUrl, String.class);  //获取openid
         JSONObject accessData = JSON.parseObject(res);
@@ -67,23 +65,32 @@ public class WxHelper {
 
             accessData = ObjectUtils.isEmpty(accessData) ? new JSONObject() : accessData;
             accessData.clear();
-            accessData.put("helper_code", "400");
+            accessData.fluentPutAll(HelperCode.error());
         } else {
-            accessData.put("helper_code", "200");
+            accessData.fluentPutAll(HelperCode.ok());
         }
         return accessData;
     }
 
+    /**
+     * 获取公众号平台的access链接
+     *
+     * @param code
+     * @return
+     */
     private String getWpaAccessUrl(String code) {
-        return String.format(WxConstant.WPA_TOKEN_ACCESS_USRL.getUrl(),
-                wxProperties.getAppId(),
-                wxProperties.getSecret(),
-                code);
+
+        return String.format(WxConstant.WPA_TOKEN_ACCESS_USRL.getUrl(), wxProperties.getAppId(), wxProperties.getSecret(), code);
     }
 
+    /**
+     * 获取用户请求链接
+     * @param access_token
+     * @param openid
+     * @return
+     */
     private String getUserInfoUrl(String access_token, String openid) {
         return String.format(WxConstant.USER_MESSAGE_USR.getUrl(), access_token, openid);
     }
-
 
 }

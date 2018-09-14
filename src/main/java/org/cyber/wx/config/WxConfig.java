@@ -35,6 +35,7 @@ public class WxConfig {
 
 
     @Bean
+    @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = "wx", value = "enabled", havingValue = "true")
     public RestTemplate restTemplate(ClientHttpRequestFactory factory) {
 
@@ -44,6 +45,7 @@ public class WxConfig {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = "wx", value = "enabled", havingValue = "true")
     public ClientHttpRequestFactory simpleClientHttpRequestFactory() {
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
