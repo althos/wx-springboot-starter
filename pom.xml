@@ -144,17 +144,6 @@
                     <showWarnings>true</showWarnings>
                 </configuration>
             </plugin>
-            <!--<plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                &lt;!&ndash;<executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>&ndash;&gt;
-            </plugin>-->
         </plugins>
     </build>
 </project>
