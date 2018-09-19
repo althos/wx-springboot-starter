@@ -17,5 +17,6 @@ public class WxProperties {
     private String secret;
     private String directUrl;
     private String scope;
+    private boolean enabled;
 
 }
