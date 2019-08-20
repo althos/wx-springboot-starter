@@ -36,9 +36,7 @@ public class WxConfig {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(prefix = "wx", value = "enabled", havingValue = "true")
     public RestTemplate restTemplate(ClientHttpRequestFactory factory) {
-
         RestTemplate restTemplate = new RestTemplate(factory);
         restTemplate.getMessageConverters().set(1, new StringHttpMessageConverter(StandardCharsets.UTF_8));
         return restTemplate;
@@ -46,11 +44,12 @@ public class WxConfig {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(prefix = "wx", value = "enabled", havingValue = "true")
     public ClientHttpRequestFactory simpleClientHttpRequestFactory() {
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-        factory.setReadTimeout(5000);//单位为ms
-        factory.setConnectTimeout(5000);//单位为ms
+        //单位为ms
+        factory.setReadTimeout(5000);
+        //单位为ms
+        factory.setConnectTimeout(5000);
         return factory;
     }
 

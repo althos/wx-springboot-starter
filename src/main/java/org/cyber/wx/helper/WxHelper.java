@@ -25,9 +25,14 @@ public class WxHelper {
         return String.format(WxConstant.CODE_URL.getUrl(), wxProperties.getAppId(), wxProperties.getDirectUrl(), wxProperties.getScope());
     }
 
+    /**
+     * 得到回调code时候去转用户信息
+     * @param code
+     * @return
+     */
     public JSONObject getUserInfo(String code) {
 
-        JSONObject json = accessData(code);
+        JSONObject json = AuthAccessData(code);
         if (!"200".equals(json.getString("helper_code"))) {
             return json;
         }
@@ -35,7 +40,8 @@ public class WxHelper {
         String openid = json.getString("openid");
 
         String userInfoUrl = getUserInfoUrl(access_token, openid);
-        String res = restTemplate.getForObject(userInfoUrl, String.class);  //用户信息
+        //用户信息
+        String res = restTemplate.getForObject(userInfoUrl, String.class);
         JSONObject userData = JSON.parseObject(res);
 
         if (ObjectUtils.isEmpty(userData) || ObjectUtils.isEmpty(userData.get("sex"))) {
@@ -49,19 +55,21 @@ public class WxHelper {
         return userData;
     }
 
+
+
     /**
      * 获取access_token
-     *
      * @param code
      * @return
      */
-    private JSONObject accessData(String code) {
+    private JSONObject AuthAccessData(String code) {
 
         String acessUrl = getWpaAccessUrl(code);
-        String res = restTemplate.getForObject(acessUrl, String.class);  //获取openid
+        //获取openid
+        String res = restTemplate.getForObject(acessUrl, String.class);
         JSONObject accessData = JSON.parseObject(res);
-
-        if (ObjectUtils.isEmpty(accessData) || ObjectUtils.isEmpty(accessData.get("openid"))) {
+        if (ObjectUtils.isEmpty(accessData)
+                || ObjectUtils.isEmpty(accessData.get("openid"))) {
 
             accessData = ObjectUtils.isEmpty(accessData) ? new JSONObject() : accessData;
             accessData.clear();
